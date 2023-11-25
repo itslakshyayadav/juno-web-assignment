@@ -1,12 +1,11 @@
-import {
-  HiOutlineXCircle,
-  HiOutlineMagnifyingGlass,
-  HiOutlineChevronDown,
-} from "react-icons/hi2";
+import { HiOutlineXCircle, HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import BaseDropdown from "./components/BaseDropdown";
 import UserData from "./UsersData";
+import { useState } from "react";
+import BaseModal from "./components/BaseModal";
 
 export default function MonitoringPage1() {
+  const [isShow, setIsShow] = useState(false);
   const menuData = [
     { name: "Overview" },
     { name: "Onboarding" },
@@ -29,6 +28,9 @@ export default function MonitoringPage1() {
     { name: "Medium" },
     { name: "Low" },
   ];
+  const handleStatusChange = (value) => {
+    setIsShow(value);
+  };
 
   return (
     <div className="flex divide-x-2">
@@ -65,29 +67,38 @@ export default function MonitoringPage1() {
         <h1 className="text-4xl font-semibold">Monitoring</h1>
         <div className="flex justify-between border-b-2 py-3">
           <div className="flex gap-8 py-2 text-gray-400 text-lg font-semibold ">
-            <a href="" className="hover:text-indigo-800 ">
+            <a
+              onClick={() => handleStatusChange(false)}
+              className="hover:text-indigo-800 cursor-pointer"
+            >
               Pending
             </a>
-            <a href="" className="hover:text-indigo-800">
+            <a
+              onClick={() => handleStatusChange(true)}
+              className="hover:text-indigo-800 cursor-pointer"
+            >
               Completed
             </a>
           </div>
-          <div className="bg-red-200 rounded-md">
-            <button
-              type="button"
-              className="px-4 gap-2 py-2 flex items-center text-red-500"
-            >
-              <HiOutlineXCircle className=" h-6 w-6 text-red-500"></HiOutlineXCircle>
-              Close account
-            </button>
-          </div>
+          <BaseModal>
+            <div className="bg-red-200 flex rounded-md">
+              <button
+                type="button"
+                className="px-4 gap-2 py-2 flex items-center text-red-500"
+              >
+                <HiOutlineXCircle className=" h-6 w-6 text-red-500"></HiOutlineXCircle>
+                Close account
+              </button>
+            </div>
+          </BaseModal>
         </div>
         <div className="flex gap-5 items-center">
-          <div className="flex items-center gap-2 w-[370px] border-2 rounded-md ">
+          <div className="flex items-center gap-2 w-96 border-2 rounded-lg">
             <HiOutlineMagnifyingGlass className="w-6 h-6 pl-2 text-gray-400"></HiOutlineMagnifyingGlass>
             <input
               type="text"
-              className="px-2 py-2 w-full"
+              className="px-2 py-2 w-full rounded-lg
+              "
               placeholder="Search"
             />
           </div>
@@ -124,7 +135,7 @@ export default function MonitoringPage1() {
             </ul>
           </BaseDropdown>
         </div>
-        <UserData></UserData>
+        <UserData isShow={isShow}></UserData>
       </section>
     </div>
   );

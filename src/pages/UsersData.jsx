@@ -3,11 +3,14 @@ import {
   HiOutlineChevronUp,
   HiOutlineChevronDown,
 } from "react-icons/hi";
-export default function UserData() {
+export default function UserData(props) {
+  const { isShow } = props;
+
   const Data = [
-    { name: "User" },
+    { name: "User", status: "User" },
     {
       name: "Risk level",
+      status: "Risk level",
       icon1: (
         <HiOutlineChevronUp className="w-3 h-3 text-gray-900"></HiOutlineChevronUp>
       ),
@@ -17,9 +20,11 @@ export default function UserData() {
     },
     {
       name: "Trigger reason",
+      status: "Action Reason",
     },
     {
       name: "In queue for",
+      status: "In queue for",
       icon1: (
         <HiOutlineChevronUp className="w-3 h-3 text-gray-900"></HiOutlineChevronUp>
       ),
@@ -29,6 +34,7 @@ export default function UserData() {
     },
     {
       name: "Date added on",
+      status: "Date added on",
       icon1: (
         <HiOutlineChevronUp className="w-3 h-3 text-gray-900"></HiOutlineChevronUp>
       ),
@@ -36,7 +42,7 @@ export default function UserData() {
         <HiOutlineChevronDown className="w-3 h-3 text-gray-500"></HiOutlineChevronDown>
       ),
     },
-    { name: "Priviously reviewed" },
+    { name: "Priviously reviewed", status: "Action Taken By" },
   ];
 
   const employeeData = [
@@ -50,11 +56,16 @@ export default function UserData() {
       ),
       riskLevel: "Medium",
       triggerReason: "IP Change",
+      actionReason: "Flagged",
       inQueueDay: "4 days",
       date: "12 Otc,2023",
       priviouslyReviewed: {
         status: "Yes",
         date: "23 Aug,2023",
+      },
+      actionTakenBy: {
+        name: "Neil",
+        email: "neil@juno.com",
       },
     },
     {
@@ -67,11 +78,17 @@ export default function UserData() {
       ),
       riskLevel: "High",
       triggerReason: "FIFO",
+      actionReason: "Closed",
+
       inQueueDay: "4 days",
       date: "12 Otc,2023",
       priviouslyReviewed: {
         status: "NO",
         date: "",
+      },
+      actionTakenBy: {
+        name: "Pratik",
+        email: "pratik@juno.com",
       },
     },
     {
@@ -84,11 +101,16 @@ export default function UserData() {
       ),
       riskLevel: "Low",
       triggerReason: "IP Change",
+      actionReason: "Cleared",
       inQueueDay: "5 days",
       date: "12 Otc,2023",
       priviouslyReviewed: {
         status: "NO",
         date: "",
+      },
+      actionTakenBy: {
+        name: "Prashanth",
+        email: "prashanth@juno.com",
       },
     },
     {
@@ -101,11 +123,16 @@ export default function UserData() {
       ),
       riskLevel: "High",
       triggerReason: "FIFO",
+      actionReason: "SOI requested",
       inQueueDay: "5 days",
       date: "12 Otc,2023",
       priviouslyReviewed: {
         status: "Yes",
         date: "12 Sep,2024",
+      },
+      actionTakenBy: {
+        name: "Rasleen Kaur",
+        email: "rasleen@juno.com",
       },
     },
     {
@@ -118,11 +145,17 @@ export default function UserData() {
       ),
       riskLevel: "Low",
       triggerReason: "FIFO",
+      actionReason: "Flagged",
+
       inQueueDay: "5 days",
       date: "12 Otc,2023",
       priviouslyReviewed: {
         status: "Yes",
         date: "12 Sep,2024",
+      },
+      actionTakenBy: {
+        name: "Pratik Shetty",
+        email: "pratik@juno.com",
       },
     },
     {
@@ -135,11 +168,16 @@ export default function UserData() {
       ),
       riskLevel: "Low",
       triggerReason: "FIFO",
+      actionReason: "Closed",
       inQueueDay: "5 days",
       date: "12 Otc,2023",
       priviouslyReviewed: {
         status: "Yes",
         date: "12 Sep,2024",
+      },
+      actionTakenBy: {
+        name: "Varun Deshpande",
+        email: "varun@juno.com",
       },
     },
   ];
@@ -179,17 +217,21 @@ export default function UserData() {
 
   return (
     <div className="overflow-x-auto">
-      <table className="text-left">
-        <thead className="w-full border rounded-tr-lg">
+      <table className="text-left border">
+        <thead className="w-full border bg-zinc-100">
           <tr>
             {Data.map((headItm, heading) => {
               return (
                 <th
                   key={heading}
-                  className="px-2 py-3 w-48 text-xs leading-4 text-gray-800 uppercase tracking-wider"
+                  className="px-2 py-3 w-48 text-sm text-gray-800"
                 >
                   <div className="flex items-center gap-2">
-                    <h1> {headItm.name}</h1>
+                    {isShow ? (
+                      <h1> {headItm.status}</h1>
+                    ) : (
+                      <h1> {headItm.name}</h1>
+                    )}
                     <div>
                       <span>{headItm.icon1}</span>
                       <span>{headItm.icon2}</span>
@@ -204,7 +246,7 @@ export default function UserData() {
           {employeeData.map((userData, index) => {
             return (
               <tr key={index} className="">
-                <td className="flex justify-between items-center px-2 py-3 w-60 mr-8">
+                <td className="flex justify-between items-center font-semibold px-2 py-3 w-60 mr-8">
                   <div>
                     <h1>{userData.name.userName}</h1>
                     <h2 className="text-xs text-gray-400">
@@ -214,18 +256,34 @@ export default function UserData() {
                   <div>{userData.icon}</div>
                 </td>
                 <td className="px-2 py-3">{riskLevelStatus(userData)}</td>
-                <td className="px-2 py-3">{userData.triggerReason}</td>
+                <td className="px-2 py-3 font-semibold">
+                  {!isShow ? userData.triggerReason : userData.actionReason}
+                </td>
                 <td className="px-2 py-3 font-medium">{userData.inQueueDay}</td>
                 <td className="px-2 py-3 text-gray-400 font-medium text-sm">
                   {userData.date}
                 </td>
                 <td className="px-2 py-3">
-                  <h1 className="font-medium">
-                    {userData.priviouslyReviewed.status}
-                  </h1>
-                  <h2 className="text-xs font-semibold text-gray-400">
-                    {userData.priviouslyReviewed.date}
-                  </h2>
+                  {!isShow ? (
+                    <>
+                      {" "}
+                      <h1 className="font-medium">
+                        {userData.priviouslyReviewed.status}
+                      </h1>
+                      <h2 className="text-xs font-semibold text-gray-400">
+                        {userData.priviouslyReviewed.date}
+                      </h2>
+                    </>
+                  ) : (
+                    <>
+                      <h1 className="font-medium">
+                        {userData.actionTakenBy.name}
+                      </h1>
+                      <h2 className="text-xs font-semibold text-gray-400">
+                        {userData.actionTakenBy.email}
+                      </h2>
+                    </>
+                  )}
                 </td>
               </tr>
             );
