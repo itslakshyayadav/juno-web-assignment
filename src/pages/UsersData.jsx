@@ -3,6 +3,7 @@ import {
   HiOutlineChevronUp,
   HiOutlineChevronDown,
 } from "react-icons/hi";
+
 export default function UserData(props) {
   const { isShow } = props;
 
@@ -42,7 +43,7 @@ export default function UserData(props) {
         <HiOutlineChevronDown className="w-3 h-3 text-gray-500"></HiOutlineChevronDown>
       ),
     },
-    { name: "Priviously reviewed", status: "Action Taken By" },
+    { name: "Previously reviewed", status: "Action Taken By" },
   ];
 
   const employeeData = [
@@ -217,14 +218,14 @@ export default function UserData(props) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="text-left border">
-        <thead className="w-full border bg-zinc-100">
+      <table className="text-left">
+        <thead className="w-full bg-zinc-100">
           <tr>
             {Data.map((headItm, heading) => {
               return (
                 <th
                   key={heading}
-                  className="px-2 py-3 w-48 text-sm text-gray-800"
+                  className="px-5 py-3 w-60 text-sm font-medium text-gray-800"
                 >
                   <div className="flex items-center gap-2">
                     {isShow ? (
@@ -232,7 +233,7 @@ export default function UserData(props) {
                     ) : (
                       <h1> {headItm.name}</h1>
                     )}
-                    <div>
+                    <div className="">
                       <span>{headItm.icon1}</span>
                       <span>{headItm.icon2}</span>
                     </div>
@@ -242,28 +243,28 @@ export default function UserData(props) {
             })}
           </tr>
         </thead>
-        <tbody className="divide-y w-full ">
+        <tbody className="divide-y w-full border">
           {employeeData.map((userData, index) => {
             return (
               <tr key={index} className="">
-                <td className="flex justify-between items-center font-semibold px-2 py-3 w-60 mr-8">
+                <td className="flex justify-between items-center font-semibold px-5 py-3 w-60 mr-5">
                   <div>
                     <h1>{userData.name.userName}</h1>
                     <h2 className="text-xs text-gray-400">
                       {userData.name.userEmail}
                     </h2>
                   </div>
-                  <div>{userData.icon}</div>
+                  <button type="button">{userData.icon}</button>
                 </td>
-                <td className="px-2 py-3">{riskLevelStatus(userData)}</td>
-                <td className="px-2 py-3 font-semibold">
+                <td className="px-5 py-3">{riskLevelStatus(userData)}</td>
+                <td className="px-5 py-3 font-semibold">
                   {!isShow ? userData.triggerReason : userData.actionReason}
                 </td>
-                <td className="px-2 py-3 font-medium">{userData.inQueueDay}</td>
-                <td className="px-2 py-3 text-gray-400 font-medium text-sm">
+                <td className="px-5 py-3 font-medium">{userData.inQueueDay}</td>
+                <td className="px-5 py-3 text-gray-400 font-medium text-sm">
                   {userData.date}
                 </td>
-                <td className="px-2 py-3">
+                <td className="px-5 py-3">
                   {!isShow ? (
                     <>
                       {" "}

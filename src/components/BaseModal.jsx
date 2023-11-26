@@ -40,8 +40,9 @@ export default function BaseModal({ children }) {
                       id=""
                       className="border py-2 px-1 rounded-md"
                     >
+                      <option value=""></option>
+
                       <option value="lakshya">email@product.com</option>
-                      <option value="lakshya">lakshya</option>
                     </select>
                   </div>
 
@@ -79,8 +80,8 @@ export default function BaseModal({ children }) {
                       id=""
                       className="border py-2 px-1 rounded-md"
                     >
+                      <option value=""></option>
                       <option value="lakshya">Flagging logics triggered</option>
-                      <option value="lakshya">lakshya</option>
                     </select>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -103,13 +104,13 @@ export default function BaseModal({ children }) {
                         name="done"
                         className="h-4 w-4"
                       />
-                      <label htmlFor="" id="lo" name="done">
+                      <label htmlFor="lo" id="lo" name="done">
                         Charge closure fee
                       </label>
                     </div>
                     <button
                       type="button"
-                      className="py-2 px-10 text-gray-400  bg-slate-200 hover:bg-indigo-800 hover:text-white rounded-lg"
+                      className="py-3 px-10 text-gray-400  bg-gray-200 hover:bg-indigo-800 hover:text-white rounded-lg"
                     >
                       Close Account
                     </button>
