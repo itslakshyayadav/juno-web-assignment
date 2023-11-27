@@ -1,12 +1,13 @@
-import { Link, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
+
 export default function Home() {
   const menuData = [
     { name: "Overview", path: "/overview" },
-    { name: "Onboarding" },
-    { name: "Monitoring", path: "monitoring" },
-    { name: "Flagging" },
-    { name: "Sorce of Income" },
-    { name: "UAR" },
+    { name: "Onboarding", path: "/onboarding" },
+    { name: "Monitoring", path: "/monitoring" },
+    { name: "Flagging", path: "/flagging" },
+    { name: "Source of Income", path: "/source-of-income" },
+    { name: "UAR", path: "/source-of-income" },
   ];
 
   return (
@@ -16,14 +17,24 @@ export default function Home() {
           <h1 className=" border-t-2 border-t-gray-400 border-b-2 border-b-gray-400 py-3 text-center text-3xl text-gray-400 font-normal">
             LOGO HERE
           </h1>
-          <ul className="flex flex-col gap-4 ">
+          <ul id="sidebar" className="flex flex-col gap-4  ">
             {menuData.map((items, index) => {
               return (
-                <Link to={items.path} key={index}>
-                  <li className="text-base px-3 py-2 hover:bg-indigo-200 text-gray-500 font-medium hover:text-blue-800 rounded-md">
-                    {items.name}
-                  </li>
-                </Link>
+                <NavLink
+                  to={items.path}
+                  data-key={items.path}
+                  key={"nav-link" + index}
+                  end
+                  className={({ isActive }) => {
+                    const commonClasses =
+                      "px-3 py-2 rounded-md font-medium hover:bg-indigo-100  hover:text-blue-800";
+                    return isActive
+                      ? `${commonClasses} bg-indigo-100 text-indigo-600`
+                      : `${commonClasses} text-gray-400`;
+                  }}
+                >
+                  <li className=" ">{items.name}</li>
+                </NavLink>
               );
             })}
           </ul>

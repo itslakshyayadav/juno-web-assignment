@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import MonitoringPage1 from "./src/pages/MonitoringPage1";
+import MonitoringPage from "./src/pages/MonitoringPage";
 import Overview from "./src/pages/Overview";
 import Home from "./src/pages/Home";
 const router = createBrowserRouter([
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/monitoring",
-        element: <MonitoringPage1 />,
+        element: <MonitoringPage />,
       },
     ],
   },

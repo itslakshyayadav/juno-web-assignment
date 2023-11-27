@@ -3,10 +3,15 @@ import BaseDropdown from "../components/BaseDropdown";
 import UserData from "./UsersData";
 import { useState } from "react";
 import BaseModal from "../components/BaseModal";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export default function MonitoringPage1() {
   const [isShow, setIsShow] = useState(false);
+  const [searchParams] = useSearchParams();
+  console.log("searchParams", searchParams);
+
+  const filterQueryParam = searchParams.get("filter");
+  console.log(filterQueryParam);
 
   const dropDownTrigger = [
     { name: "hard flag" },
@@ -44,9 +49,30 @@ export default function MonitoringPage1() {
   return (
     <section className="flex flex-col gap-5 px-4 py-8 w-full">
       <h1 className="text-4xl font-semibold">Monitoring</h1>
-      <div className="flex justify-between border-b-2 py-3">
-        <div className="flex gap-8 py-2 text-gray-400 text-base font-semibold">
+      <div className="flex justify-between border-b-2">
+        <div className="flex text-gray-400 gap-1 text-base font-semibold">
           <Link
+            to="/monitoring?filter=pending"
+            className={`py-5 px-6 hover:text-indigo-600 ${
+              filterQueryParam === "pending" || !filterQueryParam
+                ? "text-indigo-600 border-b-[3px] border-b-indigo-600"
+                : ""
+            }`}
+          >
+            Pending
+          </Link>
+          <Link
+            to="/monitoring?filter=completed"
+            className={`py-5 px-6 hover:text-indigo-600 ${
+              filterQueryParam === "completed"
+                ? "text-indigo-600 border-b-[3px] border-b-indigo-600"
+                : ""
+            }`}
+          >
+            Completed
+          </Link>
+
+          {/* <Link
             onClick={() => handleStatusChange(false)}
             className="hover:text-indigo-800"
           >
@@ -57,7 +83,7 @@ export default function MonitoringPage1() {
             className="hover:text-indigo-800"
           >
             Completed
-          </Link>
+          </Link> */}
         </div>
         <CloseAccountModal></CloseAccountModal>
       </div>
