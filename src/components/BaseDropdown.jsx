@@ -35,7 +35,7 @@ const BaseDropdown = ({ children, dropdownElement }) => {
           className="text-white gap-2 py-2 inline-flex items-center"
           onClick={toggleDropdown}
         >
-          <span className=" flex items-center gap-2 py-2 px-3  text-sm rounded-md text-gray-500 bg-zinc-100 font-medium">
+          <span className="flex items-center gap-2 py-2 px-3 text-sm rounded-md text-gray-500 bg-zinc-100 font-medium">
             {dropdownElement || "More"}
 
             {isOpen ? (
@@ -47,7 +47,7 @@ const BaseDropdown = ({ children, dropdownElement }) => {
         </button>
       </div>
       {isOpen && (
-        <div className="z-10 origin-top-right absolute right-0 py-1 px-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div className="z-10 origin-top-right absolute right-0 py-1 px-2 min-w-[8rem] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           {children}
         </div>
       )}

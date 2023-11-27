@@ -4,15 +4,18 @@ import {
   HiOutlineMagnifyingGlass,
 } from "react-icons/hi2";
 import BaseDropdown from "../components/BaseDropdown";
-import BaseModal from "../components/BaseModal";
+import CloseAccountModal from "../components/CloseAccountModal";
 import { Link, useSearchParams } from "react-router-dom";
 import BaseTable from "../components/BaseTable";
 import userData from "../mock-data/userData";
 import { USER_STATUS } from "../common/constants";
+import { useState } from "react";
 
-export default function MonitoringPage1() {
+export default function MonitoringPage() {
   const [searchParams] = useSearchParams();
   const filterQueryParam = searchParams.get("filter");
+  const [currentRiskLevel, setCurrentRiskLevel] = useState("All");
+  const [searchText, setSearchText] = useState("");
 
   const dropDownTrigger = [
     { name: "hard flag" },
@@ -22,11 +25,7 @@ export default function MonitoringPage1() {
     { name: "Reviewed" },
   ];
 
-  const dropDownRiskLevel = [
-    { name: "High" },
-    { name: "Medium" },
-    { name: "Low" },
-  ];
+  const dropDownRiskLevel = ["All", "High", "Medium", "Low"];
 
   const commonColumns = {
     user: {
@@ -143,28 +142,19 @@ export default function MonitoringPage1() {
     },
   ];
 
-  const completedUsers = userData.filter(
-    (item) => item.status === USER_STATUS.Completed
-  );
   const pendingUsers = userData.filter(
-    (item) => item.status === USER_STATUS.Pending
+    (item) =>
+      item.status === USER_STATUS.Pending &&
+      (currentRiskLevel === "All" || item.riskLevel === currentRiskLevel) &&
+      (searchText === "" || item.userName.includes(searchText))
   );
 
-  const CloseAccountModal = () => {
-    return (
-      <BaseModal>
-        <div className="bg-red-100 flex rounded-md">
-          <button
-            type="button"
-            className="px-3 gap-1 py-2 font-medium flex items-center text-red-600"
-          >
-            <HiOutlineXCircle className="h-5 w-5 text-red-600"></HiOutlineXCircle>
-            Close account
-          </button>
-        </div>
-      </BaseModal>
-    );
-  };
+  const completedUsers = userData.filter(
+    (item) =>
+      item.status === USER_STATUS.Completed &&
+      (currentRiskLevel === "All" || item.riskLevel === currentRiskLevel) &&
+      (searchText === "" || item.userName.includes(searchText))
+  );
 
   return (
     <section className="flex flex-col gap-5 px-4 py-8 w-full">
@@ -192,46 +182,64 @@ export default function MonitoringPage1() {
             Completed
           </Link>
         </div>
-        <CloseAccountModal></CloseAccountModal>
+        <CloseAccountModal>
+          <div className="bg-red-100 flex rounded-md">
+            <button
+              type="button"
+              className="px-3 gap-1 py-2 font-medium flex items-center text-red-600"
+            >
+              <HiOutlineXCircle className="h-5 w-5 text-red-600"></HiOutlineXCircle>
+              Close account
+            </button>
+          </div>
+        </CloseAccountModal>
       </div>
       <div className="flex gap-4 items-center">
         <div className="flex items-center gap-2 w-96 border-2 rounded-lg">
           <HiOutlineMagnifyingGlass className="w-6 h-6 pl-2 text-gray-400"></HiOutlineMagnifyingGlass>
           <input
             type="text"
-            className="outline-none px-2 py-2 w-full rounded-lg
-              "
+            className="outline-none px-2 py-2 w-full rounded-lg"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
             placeholder="Search"
           />
         </div>
 
         <BaseDropdown dropdownElement="Trigger reason">
-          <ul className="flex flex-col">
+          <ul className="flex flex-col gap-1">
             {dropDownTrigger.map((dropDownData, index) => {
               return (
-                <Link
-                  key={index}
-                  href=""
-                  className="hover:bg-indigo-200 hover:text-black text-gray-400 py-1 px-2 rounded-md"
-                >
-                  <li>{dropDownData.name}</li>
-                </Link>
+                <li key={"trigger-reason" + index}>
+                  <button
+                    type="button"
+                    className="flex text-left hover:bg-indigo-200 hover:text-black text-gray-400 py-1 px-2 rounded-md w-full"
+                  >
+                    {dropDownData.name}
+                  </button>
+                </li>
               );
             })}
           </ul>
         </BaseDropdown>
 
         <BaseDropdown dropdownElement="Risk level">
-          <ul className="flex flex-col ">
-            {dropDownRiskLevel.map((RiskLevelData, index) => {
+          <ul className="flex flex-col gap-1">
+            {dropDownRiskLevel.map((riskLevel, index) => {
               return (
-                <Link
-                  key={index}
-                  href=""
-                  className="hover:bg-indigo-200 hover:text-black text-gray-400 py-1 px-2 rounded-md"
-                >
-                  <li>{RiskLevelData.name}</li>
-                </Link>
+                <li key={"risk-level" + index}>
+                  <button
+                    type="button"
+                    className="flex text-left hover:bg-indigo-200 hover:text-black text-gray-400 py-1 px-2 rounded-md w-full"
+                    onClick={() => {
+                      setCurrentRiskLevel(riskLevel);
+                    }}
+                  >
+                    {riskLevel}
+                  </button>
+                </li>
               );
             })}
           </ul>

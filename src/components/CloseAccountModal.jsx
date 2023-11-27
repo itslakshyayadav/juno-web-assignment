@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HiMiniXMark } from "react-icons/hi2";
 
-export default function BaseModal({ children }) {
+export default function CloseAccountModal({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => {
     setIsOpen(true);
