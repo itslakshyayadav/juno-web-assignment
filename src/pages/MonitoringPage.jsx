@@ -1,17 +1,18 @@
-import { HiOutlineXCircle, HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import {
+  HiArrowTopRightOnSquare,
+  HiOutlineXCircle,
+  HiOutlineMagnifyingGlass,
+} from "react-icons/hi2";
 import BaseDropdown from "../components/BaseDropdown";
-import UserData from "./UsersData";
-import { useState } from "react";
 import BaseModal from "../components/BaseModal";
 import { Link, useSearchParams } from "react-router-dom";
+import BaseTable from "../components/BaseTable";
+import userData from "../mock-data/userData";
+import { USER_STATUS } from "../common/constants";
 
 export default function MonitoringPage1() {
-  const [isShow, setIsShow] = useState(false);
   const [searchParams] = useSearchParams();
-  console.log("searchParams", searchParams);
-
   const filterQueryParam = searchParams.get("filter");
-  console.log(filterQueryParam);
 
   const dropDownTrigger = [
     { name: "hard flag" },
@@ -26,9 +27,128 @@ export default function MonitoringPage1() {
     { name: "Medium" },
     { name: "Low" },
   ];
-  const handleStatusChange = (value) => {
-    setIsShow(value);
+
+  const commonColumns = {
+    user: {
+      name: "User",
+      model: "userName",
+      cell: function (rowData) {
+        return (
+          <div className="flex gap-1 justify-between items-center">
+            <div className="flex flex-col">
+              <p className="font-medium">{rowData.userName}</p>
+              <p className="text-sm text-gray-400">{rowData.userEmail}</p>
+            </div>
+
+            <button>
+              <HiArrowTopRightOnSquare className="w-6 h-6 text-blue-600"></HiArrowTopRightOnSquare>
+            </button>
+          </div>
+        );
+      },
+    },
+    riskLevel: {
+      name: "Risk level",
+      model: "riskLevel",
+      cell: function (rowData) {
+        const riskLevelClasses = {
+          High: {
+            bg: "bg-red-700",
+            text: "text-red-700",
+          },
+          Medium: {
+            bg: "bg-yellow-700",
+            text: "text-yellow-700",
+          },
+          Low: {
+            bg: "bg-green-700",
+            text: "text-green-700",
+          },
+        };
+        return (
+          <div className="flex gap-2 items-center">
+            <div
+              className={`${
+                riskLevelClasses[rowData.riskLevel].bg
+              } h-2 w-2 rounded-full`}
+            ></div>
+            <div
+              className={`${
+                riskLevelClasses[rowData.riskLevel].text
+              } font-semibold `}
+            >
+              {rowData.riskLevel}
+            </div>
+          </div>
+        );
+      },
+    },
+    dateAddedOn: {
+      name: "Date added on",
+      model: "date",
+    },
   };
+
+  const pendingTableColumns = [
+    commonColumns.user,
+    commonColumns.riskLevel,
+    {
+      name: "Trigger reason",
+      model: "triggerReason",
+    },
+    {
+      name: "In queue for",
+      model: "inQueueFor",
+    },
+    commonColumns.dateAddedOn,
+    {
+      name: "Previously reviewed",
+      model: "previouslyReviewed",
+      cell: function (rowData) {
+        return (
+          <div className="flex flex-col">
+            <p className="font-medium">{rowData.previouslyReviewed}</p>
+            <p className="text-sm text-gray-400">{rowData.reviewDate}</p>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const completedTableColumns = [
+    commonColumns.user,
+    commonColumns.riskLevel,
+    {
+      name: "Action reason",
+      model: "actionReason",
+    },
+    {
+      name: "Time to close",
+      model: "inQueueFor",
+    },
+    commonColumns.dateAddedOn,
+    {
+      name: "Action taken by",
+      model: "actionTakenBy",
+      cell: function (rowData) {
+        return (
+          <div className="flex flex-col">
+            <p className="font-medium">{rowData.actionTakenByName}</p>
+            <p className="text-sm text-gray-400">
+              {rowData.actionTakenByEmail}
+            </p>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const completedUsers = userData.filter(
+    (item) => item.status === USER_STATUS.Completed
+  );
+  const pendingUsers = userData.filter(
+    (item) => item.status === USER_STATUS.Pending
+  );
 
   const CloseAccountModal = () => {
     return (
@@ -54,7 +174,7 @@ export default function MonitoringPage1() {
           <Link
             to="/monitoring?filter=pending"
             className={`py-5 px-6 hover:text-indigo-600 ${
-              filterQueryParam === "pending" || !filterQueryParam
+              filterQueryParam === USER_STATUS.Pending || !filterQueryParam
                 ? "text-indigo-600 border-b-[3px] border-b-indigo-600"
                 : ""
             }`}
@@ -64,26 +184,13 @@ export default function MonitoringPage1() {
           <Link
             to="/monitoring?filter=completed"
             className={`py-5 px-6 hover:text-indigo-600 ${
-              filterQueryParam === "completed"
+              filterQueryParam === USER_STATUS.Completed
                 ? "text-indigo-600 border-b-[3px] border-b-indigo-600"
                 : ""
             }`}
           >
             Completed
           </Link>
-
-          {/* <Link
-            onClick={() => handleStatusChange(false)}
-            className="hover:text-indigo-800"
-          >
-            Pending
-          </Link>
-          <Link
-            onClick={() => handleStatusChange(true)}
-            className="hover:text-indigo-800"
-          >
-            Completed
-          </Link> */}
         </div>
         <CloseAccountModal></CloseAccountModal>
       </div>
@@ -98,7 +205,7 @@ export default function MonitoringPage1() {
           />
         </div>
 
-        <BaseDropdown dropdownElement=" Trigger reason">
+        <BaseDropdown dropdownElement="Trigger reason">
           <ul className="flex flex-col">
             {dropDownTrigger.map((dropDownData, index) => {
               return (
@@ -130,7 +237,17 @@ export default function MonitoringPage1() {
           </ul>
         </BaseDropdown>
       </div>
-      <UserData isShow={isShow}></UserData>
+      {filterQueryParam === USER_STATUS.Completed ? (
+        <BaseTable
+          columns={completedTableColumns}
+          rows={completedUsers}
+        ></BaseTable>
+      ) : (
+        <BaseTable
+          columns={pendingTableColumns}
+          rows={pendingUsers}
+        ></BaseTable>
+      )}
     </section>
   );
 }
