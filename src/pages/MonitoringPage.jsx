@@ -17,6 +17,7 @@ export default function MonitoringPage() {
   const [currentRiskLevel, setCurrentRiskLevel] = useState("All");
   const [searchText, setSearchText] = useState("");
 
+  console.log(filterQueryParam);
   const dropDownTrigger = [
     { name: "hard flag" },
     { name: "Temp flag" },
@@ -176,7 +177,7 @@ export default function MonitoringPage() {
             className={`py-5 px-6 hover:text-indigo-600 ${
               filterQueryParam === USER_STATUS.Completed
                 ? "text-indigo-600 border-b-[3px] border-b-indigo-600"
-                : ""
+                : " text-gray-400 hover:via-fuchsia-200"
             }`}
           >
             Completed
