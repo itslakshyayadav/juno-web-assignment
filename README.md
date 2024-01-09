@@ -1,20 +1,28 @@
 # Juno Finance Pages | React + Vite Project 👨‍💻
 
-##Web Assignment
+## Web Assignment
 
 Simple dashboard showing all the users currently in the monitoring queue who need to be reviewed for risky behaviour
 
-## Monitoring | Pending Users 🔍
+&nbsp;
+
+## 🔍 Monitoring | Pending Users
 
 ![Image](./src/assets/pending-table.png)
+&nbsp;
+&nbsp;
 
-## Monitoring | Completed Users ✅
+## ✅ Monitoring | Completed Users
 
 ![Image](./src/assets/completed-table.png)
+&nbsp;
+&nbsp;
 
-## Close Account Modal 🚫
+## 🚫 Close Account Modal
 
 ![Image](./src/assets/close-account-modal.png)
+&nbsp;
+&nbsp;
 
 ---
 
